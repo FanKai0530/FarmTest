@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李輝義紀念圖書館 花婆婆讀書會戶外活動</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center; /* 讓所有內容水平居中 */
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin: 0;
+            color: white; /* 主標題顏色 */
+        }
+        h2.main-title {
+            font-size: 1.5rem;
+            color: #FF8C00; /* 副標題顏色 */
+            margin: 10px 0 0 0;
+        }
+        h2 {
+            font-size: 1.2rem;
+            color: #4CAF50; /* 其他子標題顏色 */
+            margin-top: 20px;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto; /* 使main區塊居中 */
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: left; /* 內文文字左對齊 */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin: 5px 0;
+        }
+        .highlight {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 0.9em;
+            color: #777;
+        }
+        img.event-photo {
+            width: auto; /* 保持圖片的原始寬度 */
+            height: auto; /* 保持圖片的原始高度 */
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>李輝義紀念圖書館 花婆婆讀書會戶外活動</h1>
+        <h2 class="main-title">苗栗 永和山水庫 傑安美有機果園~踏青聽故事</h2> <!-- 副標題 -->
+    </header>
+    <main>
+        <h2>活動資訊</h2>
+        <ul>
+            <li><strong>活動日期:</strong> <span id="event-date">載入中...</span></li>
+            <li><strong>活動時間:</strong> 08:50-15:00</li>
+            <li><strong>主辦人:</strong> 陳光毅, 李萍萍</li>
+            <li><strong>交通方式:</strong> 汽車共乘</li>
+            <li><strong>導覽解說:</strong> 賴桑</li>
+        </ul>
+        <h2>活動流程</h2>
+        <ul>
+            <li><strong>集合地點:</strong> 李輝義紀念圖書館</li>
+            <li><strong>出發時間:</strong> 8:50準時出發</li>
+            <li><strong>目的地:</strong> 永和山水庫管理中心 停車場</li>
+        </ul>
+        <ol>
+            <li>欣賞永和山水庫美景</li>
+            <li>參觀傑安美有機果園 (絕佳風景)</li>
+            <li>聆聽一位科技人有機生活哲學</li>
+            <li>
+                <strong>午餐:</strong> 鳥地方快炒<br>
+                <em>為節省時間就直接先暫訂兩大桌精美客家菜合菜約4300元/桌</em>
+            </li>
+        </ol>
+        <h2>費用</h2>
+        <ul>
+            <li><strong>費用:</strong> <span class="highlight">載入中...</span></li>
+        </ul>
+        <h2>備註</h2>
+        <p>當天煩請椀云老師幫忙收費</p>
+        <h2>活動照片</h2>
+        <div id="photo-container"></div> <!-- 用來顯示圖片的容器 -->
+    </main>
+    <footer>
+        &copy; 2025 李輝義紀念圖書館
+    </footer>
+    <script>
+        function fetchSheetData() {
+            const sheetID = "1uk5VEXcp7IJduVWL7DggdU0zWJ_znym_ifQ5qacdQFU";  
+            const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+    
+            fetch(url)
+                .then(response => response.text())
+                .then(text => {
+                    let json = JSON.parse(text.substr(47).slice(0, -2)); // 移除 Google 的包裝
+                    let rows = json.table.rows;
+    
+                    // 取得數據
+                    let title = rows[1].c[0].v;  // A2 的值
+                    let cost = rows[1].c[1].v;   // B2 的值
+                    let date = rows[1].c[2].v;   // C2 的值
+                    let images = [];  // 用來儲存所有圖片的 URL
+                    
+                    // 假設圖片 URL 是從 D2 以後的資料
+                    for (let i = 1; i < rows.length; i++) {
+                        let imageURL = rows[i].c[4].v;  // D 列的圖片 URL
+                        if (imageURL) {  // 如果有圖片 URL
+                            images.push(imageURL);
+                        }
+                    }
+    
+                    // 更新 HTML 內容
+                    document.querySelector("h1").innerText = title;
+                    document.querySelector(".highlight").innerText = cost;
+                    document.querySelector("#event-date").innerText = date;
+
+                    // 顯示圖片
+                    const photoContainer = document.getElementById("photo-container");
+                    photoContainer.innerHTML = ""; // 清空容器
+
+                    // 使用迴圈顯示所有圖片
+                    images.forEach(imageURL => {
+                        const imgElement = document.createElement("img");
+                        imgElement.src = imageURL;
+                        imgElement.className = "event-photo";
+                        photoContainer.appendChild(imgElement);
+                    });
+                })
+                .catch(error => console.error("無法讀取 Google Sheets:", error));
+        }
+    
+        document.addEventListener("DOMContentLoaded", fetchSheetData);
+    </script>    
+</body>
+</html>
