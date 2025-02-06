@@ -62,11 +62,22 @@
             color: #777;
         }
         img.event-photo {
-            width: auto; /* 保持圖片的原始寬度 */
-            height: auto; /* 保持圖片的原始高度 */
+            width: 100%; /* 讓圖片適應螢幕大小 */
+            height: auto; /* 保持圖片的比例 */
             margin-top: 20px;
             border-radius: 8px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        @media screen and (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            h2.main-title {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
